@@ -1,10 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:my_online_buddies/utils/colors.dart';
+import 'package:my_online_buddies/widgets/custom_appbar.dart';
+import 'package:my_online_buddies/widgets/my_text.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: const CustomAppBar(
+        text: 'Home Screen',
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Colors.blue,
+        child: const Icon(
+          Icons.add_circle_sharp,
+          color: kWhiteColor,
+        ),
+      ),
+    );
   }
 }
