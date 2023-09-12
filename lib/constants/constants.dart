@@ -7,3 +7,9 @@ String? simpleValidator(String? val) {
 }
 
 const appName = 'My Online Friends';
+
+//Images Constants
+
+const String kCamera = 'assets/images/camera.png';
+const String kGallery = 'assets/images/gallery.png';
+

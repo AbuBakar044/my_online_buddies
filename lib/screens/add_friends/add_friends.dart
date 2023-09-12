@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:my_online_buddies/controllers/add_friends/add_friends_controller.dart';
+import 'package:my_online_buddies/screens/add_friends/custom_bottom_sheet.dart';
 import 'package:my_online_buddies/utils/colors.dart';
 import 'package:my_online_buddies/widgets/custom_appbar.dart';
 import 'package:my_online_buddies/widgets/custom_button.dart';
@@ -26,9 +28,26 @@ class AddFriendsScreen extends StatelessWidget {
               key: addFrndCtrl.addFrndFormKey,
               child: Column(
                 children: [
-                  const CircleAvatar(
-                    radius: 60.0,
-                    backgroundColor: kBlackColor,
+                  InkWell(
+                    onTap: () async {
+                      showSheet(
+                        context: context,
+                        onCameraClick: () {
+                          addFrndCtrl.pickImage(ImageSource.camera);
+                        },
+                        onGalleryClick: () {
+                          addFrndCtrl.pickImage(ImageSource.gallery);
+                        },
+                      );
+                    },
+                    child: GetBuilder<AddFriendsController>(builder: (ctrl) {
+                      return CircleAvatar(
+                        radius: 60.0,
+                        backgroundImage: ctrl.friendImage == null
+                            ? const AssetImage(kCamera)
+                            : MemoryImage(ctrl.friendImage!) as ImageProvider,
+                      );
+                    }),
                   ),
                   const SizedBox(
                     height: 50.0,
