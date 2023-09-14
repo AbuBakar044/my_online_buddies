@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "280698400747",
+    "project_id": "mybuddies-74577",
+    "storage_bucket": "mybuddies-74577.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:280698400747:android:3f84f49e2509a6b86b33ae",
+        "android_client_info": {
+          "package_name": "com.example.my_online_buddies"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDY5D8Vrm6qTlG9TAu3R-OioxYRaHOe2xA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
