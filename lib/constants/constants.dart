@@ -2,7 +2,7 @@ String? simpleValidator(String? val) {
   if (val!.isEmpty) {
     return '*please fill this field';
   } else {
-    return '';
+    return null;
   }
 }
 

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_online_buddies/controllers/add_friends/add_friends_controller.dart';
 import 'package:my_online_buddies/screens/add_friends/custom_bottom_sheet.dart';
-import 'package:my_online_buddies/utils/colors.dart';
 import 'package:my_online_buddies/widgets/custom_appbar.dart';
 import 'package:my_online_buddies/widgets/custom_button.dart';
 import 'package:my_online_buddies/widgets/custom_form_field.dart';
