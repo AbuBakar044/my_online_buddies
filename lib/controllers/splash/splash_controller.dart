@@ -8,7 +8,7 @@ class SplashController extends GetxController {
   @override
   void onInit() {
     Future.delayed(const Duration(seconds: 5), () {
-      Get.off(() => const RegisterScreen());
+      Get.off(() => const HomeScreen());
     });
     super.onInit();
   }

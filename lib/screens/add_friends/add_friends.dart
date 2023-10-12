@@ -32,10 +32,14 @@ class AddFriendsScreen extends StatelessWidget {
                       showSheet(
                         context: context,
                         onCameraClick: () {
-                          addFrndCtrl.pickImage(ImageSource.camera);
+                          addFrndCtrl
+                              .pickImage(ImageSource.camera)
+                              .then((value) => Get.back());
                         },
                         onGalleryClick: () {
-                          addFrndCtrl.pickImage(ImageSource.gallery);
+                          addFrndCtrl
+                              .pickImage(ImageSource.gallery)
+                              .then((value) => Get.back());
                         },
                       );
                     },

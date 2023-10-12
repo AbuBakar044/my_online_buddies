@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_online_buddies/constants/constants.dart';
+import 'package:my_online_buddies/screens/home/home_screen.dart';
 
 class AuthController extends GetxController {
   final nameCtrl = TextEditingController();
@@ -26,7 +27,9 @@ class AuthController extends GetxController {
           .createUserWithEmailAndPassword(
               email: emailCtrl.text, password: pwdCtrl.text)
           .then((value) {
-        saveUserData(value.user!.uid);
+        saveUserData(value.user!.uid).then((value) {
+          Get.offAll(() => const HomeScreen());
+        });
         Get.snackbar(appName, 'User Saved Successfully');
       });
     } on FirebaseException catch (e) {

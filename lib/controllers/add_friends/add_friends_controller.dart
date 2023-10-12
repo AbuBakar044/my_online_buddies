@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,8 +13,12 @@ class AddFriendsController extends GetxController {
   final friendNmbrCtrl = TextEditingController();
   final friendDescCtrl = TextEditingController();
   final addFrndFormKey = GlobalKey<FormState>();
+  var imageUrl;
+  String key = UniqueKey().toString();
   Uint8List? friendImage;
+  File? imageFile;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 
   void checkValidation() {
     if (addFrndFormKey.currentState!.validate()) {
@@ -20,12 +27,13 @@ class AddFriendsController extends GetxController {
     }
   }
 
-  pickImage(ImageSource source) async {
+  Future<void> pickImage(ImageSource source) async {
     XFile? tempImage = await ImagePicker().pickImage(source: source);
     if (tempImage == null) {
       return;
     } else {
       friendImage = await tempImage.readAsBytes();
+      imageFile = File(tempImage.path);
       update();
     }
   }
@@ -36,12 +44,22 @@ class AddFriendsController extends GetxController {
       'number': friendNmbrCtrl.text,
       'desc': friendDescCtrl.text,
     };
-    firestore
-        .collection('buddies')
-        .doc(UniqueKey().toString())
-        .set(friendsData)
-        .then((value) {
-      Get.snackbar('Online Buddies', 'Data tur gya j bhai jan');
+    firestore.collection('buddies').doc().set(friendsData).then((value) {
+      saveUserImage();
+    });
+  }
+
+  Future<void> saveUserImage() async {
+    TaskSnapshot snapshot =
+        await firebaseStorage.ref('friends').child(key).putFile(imageFile!);
+    imageUrl = await snapshot.ref.getDownloadURL();
+
+    print('..................$imageUrl');
+
+    Map<String, dynamic> imageMap = {'image': imageUrl};
+
+    firestore.collection('buddies').doc(key).update(imageMap).then((value) {
+      Get.snackbar('Online Buddies', 'Data and Image saved');
     });
   }
 }
