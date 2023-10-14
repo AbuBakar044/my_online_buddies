@@ -19,7 +19,7 @@ class RegisterScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Form(
-          key: authCtrl.authFormKey,
+          key: authCtrl.rAuthFormKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -34,7 +34,7 @@ class RegisterScreen extends StatelessWidget {
                 height: 30.0,
               ),
               CustomFormField(
-                controller: authCtrl.nameCtrl,
+                controller: authCtrl.rNameCtrl,
                 hint: 'Full Name',
                 validator: simpleValidator,
               ),
@@ -42,7 +42,7 @@ class RegisterScreen extends StatelessWidget {
                 height: 15.0,
               ),
               CustomFormField(
-                controller: authCtrl.emailCtrl,
+                controller: authCtrl.rEmailCtrl,
                 hint: 'Email',
                 validator: simpleValidator,
               ),
@@ -50,7 +50,7 @@ class RegisterScreen extends StatelessWidget {
                 height: 15.0,
               ),
               CustomFormField(
-                controller: authCtrl.pwdCtrl,
+                controller: authCtrl.rPwdCtrl,
                 hint: 'Password',
                 validator: simpleValidator,
               ),
@@ -58,8 +58,10 @@ class RegisterScreen extends StatelessWidget {
                 height: 30.0,
               ),
               CustomButton(
-                onTap: () {
-                  authCtrl.validateAllFields();
+                onTap: () async{
+                  if (await authCtrl.validateAllFields(authCtrl.rAuthFormKey)) {
+                    authCtrl.registerUser();
+                  }
                 },
                 text: 'Signup',
               )
