@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_online_buddies/constants/constants.dart';
 import 'package:my_online_buddies/controllers/home/home_controller.dart';
+import 'package:my_online_buddies/models/friend_model.dart';
 import 'package:my_online_buddies/screens/add_friends/add_friends.dart';
+import 'package:my_online_buddies/screens/home/single_view.dart';
 import 'package:my_online_buddies/utils/colors.dart';
 import 'package:my_online_buddies/widgets/custom_appbar.dart';
 import 'package:my_online_buddies/widgets/my_text.dart';
@@ -20,12 +22,14 @@ class _HomeScreenState extends State<HomeScreen> {
       FirebaseFirestore.instance.collection('buddies');
   bool isDataReceived = false;
   QuerySnapshot? querySnapshot;
-  List data = [];
+  List<FriendModel> friendsModelList = [];
   String? image;
+  String? name;
+  String? desc;
+  String? mobile;
 
   @override
   void initState() {
-    getData();
     super.initState();
   }
 
@@ -59,40 +63,53 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SizedBox(
           height: Get.height,
           width: Get.width,
-          child: data.isEmpty
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : ListView.builder(
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    if (data[index].toString().contains('image')) {
-                      image = data[index]['image'];
-                    }
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        leading: image == null
-                            ? const CircleAvatar(
-                                backgroundImage: AssetImage(kGallery),
-                              )
-                            : CircleAvatar(
-                                backgroundImage: NetworkImage(image!),
-                              ),
-                        tileColor: Colors.yellow,
-                        title: MyText(text: data[index]['name']),
-                        subtitle: MyText(text: data[index]['number']),
-                      ),
-                    );
-                  })),
-    );
-  }
+          child: StreamBuilder<QuerySnapshot>(
+              stream:
+                  FirebaseFirestore.instance.collection('buddies').snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                } else {
+                  friendsModelList.clear();
+                  for (var element in snapshot.data!.docs) {
+                    FriendModel friendModel =
+                        FriendModel.fromQuerySnapshot(element);
 
-  Future<void> getData() async {
-    querySnapshot =
-        await FirebaseFirestore.instance.collection('buddies').get();
-    setState(() {
-      data = querySnapshot!.docs;
-    });
+                    friendsModelList.add(friendModel);
+                  }
+
+                  return ListView.builder(
+                      itemCount: friendsModelList.length,
+                      itemBuilder: (context, index) {
+                        image = friendsModelList[index].image;
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ListTile(
+                            onTap: () {
+                              Get.dialog(
+                                SingleFriendScreen(
+                                  name: friendsModelList[index].name,
+                                  number: friendsModelList[index].number,
+                                  desc: friendsModelList[index].desc,
+                                ),
+                              );
+                            },
+                            leading: image == null
+                                ? const CircleAvatar(
+                                    backgroundImage: AssetImage(kGallery),
+                                  )
+                                : CircleAvatar(
+                                    backgroundImage: NetworkImage(image!),
+                                  ),
+                            tileColor: Colors.yellow,
+                            title: MyText(text: friendsModelList[index].name),
+                            subtitle:
+                                MyText(text: friendsModelList[index].number),
+                          ),
+                        );
+                      });
+                }
+              })),
+    );
   }
 }

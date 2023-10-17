@@ -7,10 +7,11 @@ import '../utils/colors.dart';
 class CustomButton extends StatelessWidget {
   final VoidCallback? onTap;
   final String? text;
+  final Color? buttonColor;
   const CustomButton({
     super.key,
     this.onTap,
-    this.text,
+    this.text, this.buttonColor,
   });
 
   @override
@@ -21,7 +22,7 @@ class CustomButton extends StatelessWidget {
         height: 55.0,
         width: Get.width / 2,
         decoration: BoxDecoration(
-          color: kBlackColor,
+          color: buttonColor ?? kBlackColor,
           borderRadius: BorderRadius.circular(
             20.0,
           ),

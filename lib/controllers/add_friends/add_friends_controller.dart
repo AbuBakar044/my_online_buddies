@@ -44,8 +44,14 @@ class AddFriendsController extends GetxController {
       'number': friendNmbrCtrl.text,
       'desc': friendDescCtrl.text,
     };
-    firestore.collection('buddies').doc().set(friendsData).then((value) {
-      saveUserImage();
+    firestore.collection('buddies').doc(key).set(friendsData).then((value) {
+      saveUserImage().then((value) {
+        friendDescCtrl.clear();
+        friendNameCtrl.clear();
+        friendNmbrCtrl.clear();
+        friendImage = null;
+        update();
+      });
     });
   }
 
