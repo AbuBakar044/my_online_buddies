@@ -82,6 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemCount: friendsModelList.length,
                       itemBuilder: (context, index) {
                         image = friendsModelList[index].image;
+
+                        print('..................${snapshot.data!.docs[index].id}');
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ListTile(
@@ -91,6 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   name: friendsModelList[index].name,
                                   number: friendsModelList[index].number,
                                   desc: friendsModelList[index].desc,
+                                  friendKey: snapshot.data!.docs[index].id,
                                 ),
                               );
                             },

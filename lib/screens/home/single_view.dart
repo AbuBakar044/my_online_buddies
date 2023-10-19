@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:my_online_buddies/constants/constants.dart';
+import 'package:my_online_buddies/controllers/home/home_controller.dart';
 import 'package:my_online_buddies/screens/home/single_detail_line.dart';
 import 'package:my_online_buddies/utils/colors.dart';
 import 'package:my_online_buddies/widgets/custom_button.dart';
@@ -12,6 +13,7 @@ class SingleFriendScreen extends StatelessWidget {
   final String? number;
   final String? desc;
   final String? image;
+  final String? friendKey;
 
   const SingleFriendScreen({
     super.key,
@@ -19,10 +21,12 @@ class SingleFriendScreen extends StatelessWidget {
     this.number,
     this.desc,
     this.image,
+    this.friendKey,
   });
 
   @override
   Widget build(BuildContext context) {
+    final ctrl = Get.find<HomeController>();
     return Scaffold(
       backgroundColor: Colors.black12,
       appBar: AppBar(
@@ -116,7 +120,14 @@ class SingleFriendScreen extends StatelessWidget {
                         child: CustomButton(
                           text: 'Delete',
                           buttonColor: Colors.red,
-                          onTap: () {},
+                          onTap: () {
+                            friendKey == null
+                                ? Get.snackbar(
+                                    appName, 'Friend Can not be deleted')
+                                : ctrl.deleteFriend(friendKey!).then((value) {
+                                    Get.back();
+                                  });
+                          },
                         ),
                       ),
                     ),
@@ -124,8 +135,8 @@ class SingleFriendScreen extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: CustomButton(
-                          text: 'Edit',
-                          buttonColor: Colors.blue,
+                          text: 'Save',
+                          buttonColor: Colors.green,
                           onTap: () {},
                         ),
                       ),
