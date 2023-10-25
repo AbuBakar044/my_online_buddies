@@ -17,17 +17,25 @@ class SingleDetailLine extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        MyText(
-          text: name,
-          weight: FontWeight.bold,
-          size: 17.0,
+        Expanded(
+          flex: 3,
+          child: MyText(
+            text: name,
+            weight: FontWeight.bold,
+            size: 17.0,
+          ),
         ),
         const SizedBox(
           width: 20.0,
         ),
-        MyText(
-          text: details,
-          size: 16.0,
+        Expanded(
+          flex: 5,
+          child: MyText(
+            text: details,
+            size: 16.0,
+            maxLines: 15,
+            overFlow: TextOverflow.ellipsis,
+          ),
         )
       ],
     );

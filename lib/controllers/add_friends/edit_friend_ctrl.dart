@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,19 +9,18 @@ import 'package:my_online_buddies/constants/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AddFriendsController extends GetxController {
+class EditFriendController extends GetxController {
   final friendNameCtrl = TextEditingController();
   final friendNmbrCtrl = TextEditingController();
   final friendDescCtrl = TextEditingController();
   final addFrndFormKey = GlobalKey<FormState>();
   var imageUrl;
-  String key = UniqueKey().toString();
+  String? key;
   Uint8List? friendImage;
   File? imageFile;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   FirebaseStorage firebaseStorage = FirebaseStorage.instance;
   String? userID;
-
   @override
   void onInit() {
     getCurrentUserID();
@@ -54,7 +52,13 @@ class AddFriendsController extends GetxController {
       'desc': friendDescCtrl.text,
       'key': key,
     };
-    firestore.collection('users').doc(userID).collection('friends').doc(key).set(friendsData).then((value) {
+    firestore
+        .collection('users')
+        .doc(userID)
+        .collection('friends')
+        .doc(key)
+        .update(friendsData)
+        .then((value) {
       saveUserImage().then((value) {
         friendDescCtrl.clear();
         friendNameCtrl.clear();
@@ -67,14 +71,18 @@ class AddFriendsController extends GetxController {
 
   Future<void> saveUserImage() async {
     TaskSnapshot snapshot =
-        await firebaseStorage.ref('friends').child(key).putFile(imageFile!);
+        await firebaseStorage.ref('friends').child(key!).putFile(imageFile!);
     imageUrl = await snapshot.ref.getDownloadURL();
 
     print('..................$imageUrl');
 
     Map<String, dynamic> imageMap = {'image': imageUrl};
 
-    firestore.collection('users').doc(userID).collection('friends').doc(key).update(imageMap).then((value) {
+    firestore
+        .collection('users')
+        .doc(userID)
+        .collection('friends')
+        .doc(key).update(imageMap).then((value) {
       Get.snackbar('Online Buddies', 'Data and Image saved');
     });
   }

@@ -63,56 +63,61 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SizedBox(
           height: Get.height,
           width: Get.width,
-          child: StreamBuilder<QuerySnapshot>(
-              stream:
-                  FirebaseFirestore.instance.collection('buddies').snapshots(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
-                } else {
-                  friendsModelList.clear();
-                  for (var element in snapshot.data!.docs) {
-                    FriendModel friendModel =
-                        FriendModel.fromQuerySnapshot(element);
+          child: GetBuilder<HomeController>(
+            builder: (ctrl) {
+              return StreamBuilder<QuerySnapshot>(
+                  stream:
+                      FirebaseFirestore.instance.collection('users').doc(ctrl.userID).collection('friends').snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(child: CircularProgressIndicator());
+                    } else {
+                      friendsModelList.clear();
+                      for (var element in snapshot.data!.docs) {
+                        FriendModel friendModel =
+                            FriendModel.fromQuerySnapshot(element);
 
-                    friendsModelList.add(friendModel);
-                  }
+                        friendsModelList.add(friendModel);
+                      }
 
-                  return ListView.builder(
-                      itemCount: friendsModelList.length,
-                      itemBuilder: (context, index) {
-                        image = friendsModelList[index].image;
+                      return ListView.builder(
+                          itemCount: friendsModelList.length,
+                          itemBuilder: (context, index) {
+                            image = friendsModelList[index].image;
 
-                        print('..................${snapshot.data!.docs[index].id}');
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ListTile(
-                            onTap: () {
-                              Get.dialog(
-                                SingleFriendScreen(
-                                  name: friendsModelList[index].name,
-                                  number: friendsModelList[index].number,
-                                  desc: friendsModelList[index].desc,
-                                  friendKey: snapshot.data!.docs[index].id,
-                                ),
-                              );
-                            },
-                            leading: image == null
-                                ? const CircleAvatar(
-                                    backgroundImage: AssetImage(kGallery),
-                                  )
-                                : CircleAvatar(
-                                    backgroundImage: NetworkImage(image!),
-                                  ),
-                            tileColor: Colors.yellow,
-                            title: MyText(text: friendsModelList[index].name),
-                            subtitle:
-                                MyText(text: friendsModelList[index].number),
-                          ),
-                        );
-                      });
-                }
-              })),
+                            print('..................${snapshot.data!.docs[index].id}');
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListTile(
+                                onTap: () {
+                                  Get.dialog(
+                                    SingleFriendScreen(
+                                      name: friendsModelList[index].name,
+                                      number: friendsModelList[index].number,
+                                      desc: friendsModelList[index].desc,
+                                      friendKey: snapshot.data!.docs[index].id,
+                                      image: friendsModelList[index].image,
+                                    ),
+                                  );
+                                },
+                                leading: image == null
+                                    ? const CircleAvatar(
+                                        backgroundImage: AssetImage(kGallery),
+                                      )
+                                    : CircleAvatar(
+                                        backgroundImage: NetworkImage(image!),
+                                      ),
+                                tileColor: Colors.yellow,
+                                title: MyText(text: friendsModelList[index].name),
+                                subtitle:
+                                    MyText(text: friendsModelList[index].number),
+                              ),
+                            );
+                          });
+                    }
+                  });
+            }
+          )),
     );
   }
 }

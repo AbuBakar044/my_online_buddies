@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:my_online_buddies/constants/constants.dart';
 import 'package:my_online_buddies/controllers/home/home_controller.dart';
+import 'package:my_online_buddies/screens/add_friends/add_friends.dart';
+import 'package:my_online_buddies/screens/add_friends/edit_friend.dart';
 import 'package:my_online_buddies/screens/home/single_detail_line.dart';
 import 'package:my_online_buddies/utils/colors.dart';
 import 'package:my_online_buddies/widgets/custom_button.dart';
@@ -58,6 +60,7 @@ class SingleFriendScreen extends StatelessWidget {
                   child: Container(
                     height: Get.height / 2,
                     width: Get.width,
+                    padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
                       color: kWhiteColor,
                       borderRadius: BorderRadius.circular(
@@ -71,21 +74,28 @@ class SingleFriendScreen extends StatelessWidget {
                           left: 15.0,
                           right: 15.0,
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SingleDetailLine(name: 'Name:', details: name!),
-                            const SizedBox(
-                              height: 30.0,
-                            ),
-                            SingleDetailLine(name: 'Number:', details: number!),
-                            const SizedBox(
-                              height: 30.0,
-                            ),
-                            SingleDetailLine(
-                                name: 'Description:', details: desc!)
-                          ],
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                height: 100.0,
+                              ),
+                              SingleDetailLine(name: 'Name:', details: name!),
+                              const SizedBox(
+                                height: 30.0,
+                              ),
+                              SingleDetailLine(
+                                  name: 'Number:', details: number!),
+                              const SizedBox(
+                                height: 30.0,
+                              ),
+                              SingleDetailLine(
+                                  name: 'Description:', details: desc!)
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -135,9 +145,19 @@ class SingleFriendScreen extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: CustomButton(
-                          text: 'Save',
+                          text: 'Edit',
                           buttonColor: Colors.green,
-                          onTap: () {},
+                          onTap: () {
+                            Get.off(
+                              () =>  EditFriendsScreen(
+                                name: name,
+                                number: number,
+                                desc: desc,
+                                friendKey: friendKey,
+                                image: image,
+                              ),
+                            );
+                          },
                         ),
                       ),
                     )

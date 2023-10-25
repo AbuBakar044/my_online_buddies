@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_online_buddies/screens/auth/otp_screen.dart';
+
 import 'package:my_online_buddies/screens/splash/splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';

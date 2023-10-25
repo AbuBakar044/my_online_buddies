@@ -36,7 +36,9 @@ class AuthController extends GetxController {
           .createUserWithEmailAndPassword(
               email: rEmailCtrl.text, password: rPwdCtrl.text)
           .then((value) {
+            saveUser(value.user!.uid);
         saveUserData(value.user!.uid).then((value) {
+          
           Get.offAll(() => const HomeScreen());
         });
         Get.snackbar(appName, 'User Saved Successfully');
@@ -48,6 +50,7 @@ class AuthController extends GetxController {
 
   Future<void> saveUserData(String userID) async {
     Map<String, dynamic> userData = {
+      'id': userID,
       'name': rNameCtrl.text,
       'email': rEmailCtrl.text,
       'pwd': rPwdCtrl.text,
@@ -63,7 +66,7 @@ class AuthController extends GetxController {
         password: lPwdCtrl.text,
       )
           .then((value) {
-        saveUser();
+        saveUser(value.user!.uid);
         Get.offAll(() => const HomeScreen());
       });
     } on FirebaseAuthException catch (e) {
@@ -71,8 +74,10 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> saveUser() async {
+  Future<void> saveUser(String userID) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.setString('user', lEmailCtrl.text);
+    preferences.setString('user', userID);
+
+    print('.........................$userID');
   }
 }

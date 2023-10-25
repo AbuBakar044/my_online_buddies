@@ -9,19 +9,39 @@ import 'package:my_online_buddies/widgets/custom_form_field.dart';
 
 import '../../constants/constants.dart';
 
-class AddFriendsScreen extends StatelessWidget {
-
-  const AddFriendsScreen({
+class EditFriendsScreen extends StatefulWidget {
+  final String? image;
+  final String? name;
+  final String? number;
+  final String? desc;
+  final String? friendKey;
+  const EditFriendsScreen({
     super.key,
-    
+    this.image,
+    this.name,
+    this.number,
+    this.desc,
+    this.friendKey,
   });
 
   @override
+  State<EditFriendsScreen> createState() => _EditFriendsScreenState();
+}
+
+class _EditFriendsScreenState extends State<EditFriendsScreen> {
+  final addFrndCtrl = Get.put<AddFriendsController>(AddFriendsController());
+
+  @override
+  void initState() {
+    addFrndCtrl.key = widget.friendKey!;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final addFrndCtrl = Get.put<AddFriendsController>(AddFriendsController());
     return Scaffold(
       appBar: const CustomAppBar(
-        text: 'Add Friend',
+        text: 'Edit Friend',
       ),
       body: Center(
         child: Padding(
@@ -39,20 +59,25 @@ class AddFriendsScreen extends StatelessWidget {
                           addFrndCtrl
                               .pickImage(ImageSource.camera)
                               .then((value) => Get.back());
+                          
                         },
                         onGalleryClick: () {
                           addFrndCtrl
                               .pickImage(ImageSource.gallery)
                               .then((value) => Get.back());
+                          
                         },
                       );
                     },
                     child: GetBuilder<AddFriendsController>(builder: (ctrl) {
                       return CircleAvatar(
                         radius: 60.0,
-                        backgroundImage: ctrl.friendImage == null
-                            ? const AssetImage(kCamera)
-                            : MemoryImage(ctrl.friendImage!) as ImageProvider,
+                        //backgroundImage: widget.image != null ? NetworkImage(widget.image!) : ctrl.friendImage ,
+                        backgroundImage: widget.image != null
+                            ? NetworkImage(widget.image!)
+                            : ctrl.friendImage != null
+                                ? MemoryImage(ctrl.friendImage!)
+                                : const AssetImage(kCamera) as ImageProvider,
                       );
                     }),
                   ),
@@ -61,7 +86,7 @@ class AddFriendsScreen extends StatelessWidget {
                   ),
                   CustomFormField(
                     controller: addFrndCtrl.friendNameCtrl,
-                    hint: 'Add Name',
+                    hint: widget.name,
                     validator: simpleValidator,
                   ),
                   const SizedBox(
@@ -69,7 +94,7 @@ class AddFriendsScreen extends StatelessWidget {
                   ),
                   CustomFormField(
                     controller: addFrndCtrl.friendNmbrCtrl,
-                    hint: 'Add Number',
+                    hint: widget.number,
                     textInputType: TextInputType.phone,
                     validator: simpleValidator,
                   ),
@@ -79,14 +104,14 @@ class AddFriendsScreen extends StatelessWidget {
                   CustomFormField(
                     maxLines: 10,
                     controller: addFrndCtrl.friendDescCtrl,
-                    hint: 'Add description',
+                    hint: widget.desc,
                     validator: simpleValidator,
                   ),
                   const SizedBox(
                     height: 20.0,
                   ),
                   CustomButton(
-                    text: 'Save',
+                    text: 'Update',
                     onTap: addFrndCtrl.checkValidation,
                   ),
                 ],
@@ -97,5 +122,4 @@ class AddFriendsScreen extends StatelessWidget {
       ),
     );
   }
-
 }
