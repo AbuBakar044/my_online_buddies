@@ -64,6 +64,49 @@ class LoginScreen extends StatelessWidget {
                 },
                 child: const MyText(text: 'Don\'t have an account?'),
               ),
+              SizedBox(
+                height: 16,
+              ),
+              InkWell(
+                child: Container(
+                    width: Get.width / 1.5,
+                    height: Get.height / 16,
+                    margin: EdgeInsets.only(top: 25),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.black),
+                    child: Center(
+                        child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Container(
+                            height: 30.0,
+                            width: 30.0,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                    'assets/images/camera.png',
+                                  ),
+                                  fit: BoxFit.cover),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          Text(
+                            'Sign in with Google',
+                            style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ))),
+                onTap: () async {
+                  authCtrl.signInWithGoogle(context: context);
+                },
+              ),
             ],
           ),
         ),

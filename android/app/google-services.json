@@ -12,7 +12,20 @@
           "package_name": "com.example.my_online_buddies"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "280698400747-i1e0g1lpp9hmleln1eql34l5raiuc108.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.my_online_buddies",
+            "certificate_hash": "6b8adece2c65f3eaefc1fa720f9ba650f673187f"
+          }
+        },
+        {
+          "client_id": "280698400747-s4p3g1geh6s6gdvd6qll5mjfrj2aqaoo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDY5D8Vrm6qTlG9TAu3R-OioxYRaHOe2xA"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "280698400747-s4p3g1geh6s6gdvd6qll5mjfrj2aqaoo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
